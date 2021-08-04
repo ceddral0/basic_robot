@@ -1,13 +1,30 @@
 basic_robot.commands = {};
 
--- set up nodes for planting (for example seeds -> plant) : [nodename] = plant_name
-basic_robot.plant_table  = {["farming:seed_barley"]="farming:barley_1",["farming:beans"]="farming:beanpole_1", -- so it works with farming redo mod
-["farming:blueberries"]="farming:blueberry_1",["farming:carrot"]="farming:carrot_1",["farming:cocoa_beans"]="farming:cocoa_1",
-["farming:coffee_beans"]="farming:coffee_1",["farming:corn"]="farming:corn_1",
-["farming:seed_cotton"]="farming:cotton_1",["farming:cucumber"]="farming:cucumber_1",["farming:grapes"]="farming:grapes_1",
-["farming:melon_slice"]="farming:melon_1",["farming:potato"]="farming:potato_1",["farming:pumpkin_slice"]="farming:pumpkin_1",
-["farming:raspberries"]="farming:raspberry_1",["farming:rhubarb"]="farming:rhubarb_1",["farming:tomato"]="farming:tomato_1",
-["farming:seed_wheat"]="farming:wheat_1"}
+-- set up nodes for plant with reverse on and filter set (for example seeds -> plant) : [nodename] = plant_name
+basic_robot.plant_cache  = {}
+local item_to_node = function(item)
+	local node = basic_robot.plant_cache[item]
+	if node then
+		-- fast path
+		return node
+	end
+	if farming and farming.registered_plants then
+		for crop, cropdef in pairs(farming.registered_plants) do
+			if cropdef.seed == item then
+				node = crop .. "_1"
+				-- trust that farming.registered_plants only contains valid nodes
+				basic_robot.plant_cache[item] = node
+			end
+		end
+	end
+	if not node then
+		node = item
+	end
+	if not minetest.registered_nodes[node] then
+		return nil
+	end
+	return node
+end
 
 
 local function tick(pos) -- needed for plants to start growing: minetest 0.4.14 farming
@@ -357,7 +374,7 @@ basic_robot.commands.place = function(name,nodename, param2,dir)
 		end
 	end
 	
-	local placename = basic_robot.plant_table[nodename];
+	local placename = item_to_node(nodename);
 	if placename then
 		minetest.set_node(pos,{name = placename})
 		tick(pos); -- needed for seeds to grow
