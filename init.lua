@@ -14,13 +14,23 @@ basic_robot.admin_bot_pos = {x=0,y=1,z=0} -- position of admin robot spawner tha
 basic_robot.maxoperations = 10; -- how many operations (dig, place,move,...,generate energy,..) available per run,  0 = unlimited
 basic_robot.dig_require_energy = true; -- does robot require energy to dig stone?
 
-basic_robot.bad_inventory_blocks = { -- disallow taking from these nodes inventories to prevent player abuses
-    ["moreblocks:circular_saw"] = true,
+basic_robot.limit_inventory_table = { -- disallow taking from these nodes inventories to prevent player abuses
+	["basic_machines:autocrafter"]= {["recipe"]=1, ["output"]=1},
+	["basic_machines:battery_0"] = {["upgrade"] = 1},
+	["basic_machines:battery_1"] = {["upgrade"] = 1},
+	["basic_machines:battery_2"] = {["upgrade"] = 1},
+	["basic_machines:constructor"]= {["recipe"]=1},
+	["basic_machines:detector"] = true,
+	["basic_machines:generator"] = {["upgrade"] = 1},
+	["basic_machines:grinder"] = {["upgrade"] = 1},
+	["basic_machines:mover"] = true,
 	["craft_guide:sign_wall"] = true,
-	["basic_machines:battery_0"] = true,
-	["basic_machines:battery_1"] = true,
-	["basic_machines:battery_2"] = true,
-	["basic_machines:generator"] = true,
+	["moreblocks:circular_saw"] = true,
+	["pipeworks:autocrafter"] = {["recipe"]=1},
+	["pipeworks:digiline_filter"] = true,
+	["pipeworks:filter"] = true,
+	["pipeworks:mese_filter"] = true,
+	["smartshop:shop"] = true,
 }
 ----- END OF SETTINGS ------
 

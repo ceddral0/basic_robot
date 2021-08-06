@@ -227,7 +227,10 @@ basic_robot.commands.take_item = function(name,item, inventory,dir)
 	
 	local pos = basic_robot.data[name].spawnpos; -- position of spawner block
 	
-	if basic_robot.bad_inventory_blocks[ minetest.get_node(tpos).name ] then return false end -- dont allow take from 
+	local bad_inv = basic_robot.limit_inventory_table[ minetest.get_node(tpos).name ]
+	if bad_inv then
+		if bad_inv == true or bad_inv[inventory] then return false end -- dont allow take from
+	end
 	
 	local meta = minetest.get_meta(pos);
 	local tmeta = minetest.get_meta(tpos);
