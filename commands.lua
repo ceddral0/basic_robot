@@ -9,10 +9,9 @@ local item_to_node = function(item)
 		return node
 	end
 	if farming and farming.registered_plants then
-		for crop, cropdef in pairs(farming.registered_plants) do
+		for key, cropdef in pairs(farming.registered_plants) do
 			if cropdef.seed == item then
-				node = crop .. "_1"
-				-- trust that farming.registered_plants only contains valid nodes
+				node = cropdef.crop .. "_1"
 			end
 		end
 	end
